@@ -41,5 +41,12 @@ public class PersonService {
         return person;
     }
 
+    public Person update (Person person){
+        person.setId(counter.incrementAndGet());
+        return person;
+    }
 
+    public void delete (String id){
+
+    }
 }
