@@ -1,14 +1,27 @@
 package com.example.springbootapirestcrud.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "person")
 public class Person implements Serializable {
 
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "first_name",length = 80, nullable = false)
     private String firstName;
+
+    @Column(name = "last_name",length = 80, nullable = false)
     private String lastName;
+
+    @Column (nullable = false)
     private String adress;
+
+    @Column(length = 6, nullable = false)
     private String gender;
 
     public Person (){}
