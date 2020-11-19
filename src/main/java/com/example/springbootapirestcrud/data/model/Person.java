@@ -1,4 +1,4 @@
-package com.example.springbootapirestcrud.model;
+package com.example.springbootapirestcrud.data.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,7 +24,7 @@ public class Person implements Serializable {
     @Column(length = 6, nullable = false)
     private String gender;
 
-    public Person (){}
+    public Person(){}
 
     public Long getId() {
         return id;
@@ -70,12 +70,12 @@ public class Person implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
-        Person person = (Person) o;
-        return Objects.equals(getId(), person.getId()) &&
-                Objects.equals(getFirstName(), person.getFirstName()) &&
-                Objects.equals(getLastName(), person.getLastName()) &&
-                Objects.equals(getAdress(), person.getAdress()) &&
-                Objects.equals(getGender(), person.getGender());
+        Person personVO = (Person) o;
+        return Objects.equals(getId(), personVO.getId()) &&
+                Objects.equals(getFirstName(), personVO.getFirstName()) &&
+                Objects.equals(getLastName(), personVO.getLastName()) &&
+                Objects.equals(getAdress(), personVO.getAdress()) &&
+                Objects.equals(getGender(), personVO.getGender());
     }
 
     @Override

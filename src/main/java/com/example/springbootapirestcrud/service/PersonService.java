@@ -1,7 +1,9 @@
 package com.example.springbootapirestcrud.service;
 
+import com.example.springbootapirestcrud.converter.DozerConverter;
+import com.example.springbootapirestcrud.data.vo.PersonVO;
 import com.example.springbootapirestcrud.exception.ResourceNotFoundException;
-import com.example.springbootapirestcrud.model.Person;
+import com.example.springbootapirestcrud.data.model.Person;
 import com.example.springbootapirestcrud.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,34 +16,41 @@ public class PersonService {
     @Autowired
     PersonRepository repository;
 
-    public List<Person> findAll (){
-
-        return repository.findAll();
+    public List<PersonVO> findAll() {
+        return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
     }
 
-    public Person findById(Long id){
 
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+    public PersonVO findById(Long id) {
+
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        return DozerConverter.parseObject(entity, PersonVO.class);
     }
 
-    public Person create (Person person){
+    public PersonVO create (PersonVO person){
 
-        return repository.save(person);
+        var entity = DozerConverter.parseObject(person, Person.class);
+        var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
 
-    public Person update (Person p){
+    public PersonVO update(PersonVO person) {
+        var entity = repository.findById(person.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
 
-        Person person = repository.findById(p.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
-        person.setFirstName(p.getFirstName());
-        person.setLastName(p.getLastName());
-        person.setAdress(p.getAdress());
-        person.setGender(p.getGender());
+        entity.setFirstName(person.getFirstName());
+        entity.setLastName(person.getLastName());
+        entity.setAdress(person.getAdress());
+        entity.setGender(person.getGender());
 
-        return   repository.save(person);
+        var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
 
-    public void delete (Long id){
-        Person person = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
-        repository.delete(person);
+    public void delete(Long id) {
+        Person entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        repository.delete(entity);
     }
 }
