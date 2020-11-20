@@ -1,15 +1,19 @@
 package com.example.springbootapirestcrud.data.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+@JsonPropertyOrder({"id", "firstName", "lastName", "gender", "adress"})
 public class PersonVO implements Serializable {
 
     private Long id;
     private String firstName;
     private String lastName;
+    @JsonProperty("address")
     private String adress;
     private String gender;
 
